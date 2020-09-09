@@ -69,6 +69,7 @@ class Engine:
             temperature=args.temperature,
             top_p=args.top_p,
             logprobs=args.logprobs,
+            stop=json.loads(args.stop or '[]'),
             **kwargs
         )
         if not args.stream:
@@ -120,6 +121,8 @@ class Completion:
             stream=args.stream,
             temperature=args.temperature,
             top_p=args.top_p,
+            stop=json.loads(args.stop or '[]'),
+            frequency_penalty=args.frequency_penalty,
             echo=True,
         )
         if not args.stream:
@@ -299,6 +302,12 @@ Mutually exclusive with `top_p`.""",
     )
     sub.add_argument(
         "--stop", help="A stop sequence at which to stop generating tokens."
+    )
+    sub.add_argument(
+        "-F",
+        "--frequency_penalty",
+        help="""Decrease repetition.""",
+        type=float,
     )
     sub.set_defaults(func=Completion.create)
 
